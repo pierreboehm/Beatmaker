@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/contentTickContainer"
+    android:orientation="vertical"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <org.pb.android.beatmaker.fragment.ui.ClickableImageButton_
+        android:id="@+id/button_1"
+        android:layout_width="56dp"
+        android:layout_height="56dp" />
+
+    <org.pb.android.beatmaker.fragment.ui.ClickableImageButton_
+        android:id="@+id/button_2"
+        android:layout_width="56dp"
+        android:layout_height="56dp" />
+
+    <org.pb.android.beatmaker.fragment.ui.ClickableImageButton_
+        android:id="@+id/button_3"
+        android:layout_width="56dp"
+        android:layout_height="56dp" />
+
+    <org.pb.android.beatmaker.fragment.ui.ClickableImageButton_
+        android:id="@+id/button_4"
+        android:layout_width="56dp"
+        android:layout_height="56dp" />
+
+</LinearLayout>

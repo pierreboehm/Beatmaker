@@ -59,21 +59,25 @@ public class ContentTickContainer extends LinearLayout {
     @Click(R.id.button_1)
     public void onButton1Click() {
         Log.d(TAG, "#" + index + " onButton1Click");
+        button1.setState(ClickableImageButton.Types.KICK);
     }
 
     @Click(R.id.button_2)
     public void onButton2Click() {
         Log.d(TAG, "#" + index + " onButton2Click");
+        button2.setState(ClickableImageButton.Types.SNARE);
     }
 
     @Click(R.id.button_3)
     public void onButton3Click() {
         Log.d(TAG, "#" + index + " onButton3Click");
+        button3.setState(ClickableImageButton.Types.HIHAT);
     }
 
     @Click(R.id.button_4)
     public void onButton4Click() {
         Log.d(TAG, "#" + index + " onButton4Click");
+        button4.setState(ClickableImageButton.Types.TONE);
     }
 
     public List<ClickableImageButton> getClickableImageButtons() {

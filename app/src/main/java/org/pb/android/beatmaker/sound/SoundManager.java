@@ -16,6 +16,7 @@ import java.util.Map;
 @EBean(scope = EBean.Scope.Singleton)
 public class SoundManager {
 
+    private static final float DEFAULT_VOLUME = .5f;
     @RootContext
     Context context;
 
@@ -52,16 +53,16 @@ public class SoundManager {
     public void playSound(ClickableImageButton.Types type) {
         switch (type) {
             case KICK:
-                soundPool.play(kickSoundIndex, 1f, 1f, 1, 0, 1f);
+                soundPool.play(kickSoundIndex, DEFAULT_VOLUME, DEFAULT_VOLUME, 1, 0, 1f);
                 break;
             case SNARE:
-                soundPool.play(snareSoundIndex, 1f, 1f, 1, 0, 1f);
+                soundPool.play(snareSoundIndex, DEFAULT_VOLUME, DEFAULT_VOLUME, 1, 0, 1f);
                 break;
             case HIHAT:
-                soundPool.play(hihatSoundIndex, 1f, 1f, 1, 0, 1f);
+                soundPool.play(hihatSoundIndex, DEFAULT_VOLUME, DEFAULT_VOLUME, 1, 0, 1f);
                 break;
             case TONE:
-                soundPool.play(toneSoundIndex, 1f, 1f, 1, 0, 1f);
+                soundPool.play(toneSoundIndex, DEFAULT_VOLUME, DEFAULT_VOLUME, 1, 0, 1f);
                 break;
         }
     }

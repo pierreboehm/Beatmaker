@@ -10,7 +10,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Beatmaker">
 
-        <activity android:name="org.pb.android.beatmaker.MainActivity_">
+        <activity
+            android:name="org.pb.android.beatmaker.MainActivity_"
+            android:screenOrientation="landscape">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />

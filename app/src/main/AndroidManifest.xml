@@ -11,8 +11,7 @@
         android:theme="@style/Theme.Beatmaker">
 
         <activity
-            android:name="org.pb.android.beatmaker.MainActivity_"
-            android:screenOrientation="landscape">
+            android:name="org.pb.android.beatmaker.MainActivity_">
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

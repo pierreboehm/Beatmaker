@@ -4,7 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
-import android.os.Bundle;
+import android.annotation.SuppressLint;
 import android.util.Log;
 import android.view.WindowManager;
 import android.widget.Toast;
@@ -12,8 +12,10 @@ import android.widget.Toast;
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.UiThread;
-import org.greenrobot.eventbus.EventBus;
+import org.pb.android.beatmaker.fragment.EditorFragment;
+import org.pb.android.beatmaker.fragment.EditorFragment_;
 
+@SuppressLint("NonConstantResourceId")
 @EActivity(R.layout.activity_main)
 public class MainActivity extends AppCompatActivity {
 
@@ -23,20 +25,21 @@ public class MainActivity extends AppCompatActivity {
 
     @AfterViews
     public void initViews() {
-        // TODO
+        EditorFragment editorFragment = EditorFragment_.builder().build();
+        setFragment(editorFragment, EditorFragment.TAG);
     }
 
     @Override
     public void onResume() {
         super.onResume();
 
-        EventBus.getDefault().register(this);
+        //EventBus.getDefault().register(this);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
     }
 
     @Override
     public void onPause() {
-        EventBus.getDefault().unregister(this);
+        //EventBus.getDefault().unregister(this);
         super.onPause();
     }
 

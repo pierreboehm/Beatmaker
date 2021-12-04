@@ -11,6 +11,7 @@ import org.androidannotations.annotations.ViewById;
 import org.pb.android.beatmaker.R;
 import org.pb.android.beatmaker.data.ContentTickContainer;
 import org.pb.android.beatmaker.data.ContentTickContainer_;
+import org.pb.android.beatmaker.fragment.view.TickSamplesView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,6 +24,9 @@ public class EditorFragment extends Fragment {
 
     @ViewById(R.id.contentSamplesContainer)
     ViewGroup contentSamplesContainer;
+
+    @ViewById(R.id.tickSamplesView)
+    TickSamplesView tickSamplesView;
 
     private List<ContentTickContainer> contentTickContainerList = new ArrayList<>();
 
@@ -38,5 +42,7 @@ public class EditorFragment extends Fragment {
             contentSamplesContainer.addView(tickContainer);
             contentTickContainerList.add(tickContainer);
         }
+
+        tickSamplesView.setTickSamplesList(contentTickContainerList);
     }
 }

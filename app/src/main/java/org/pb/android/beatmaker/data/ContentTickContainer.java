@@ -56,6 +56,14 @@ public class ContentTickContainer extends LinearLayout {
         super(context, attrs, defStyleAttr);
     }
 
+    @AfterViews
+    public void initViews() {
+        button1.setType(ClickableImageButton.Types.KICK);
+        button2.setType(ClickableImageButton.Types.SNARE);
+        button3.setType(ClickableImageButton.Types.HIHAT);
+        button4.setType(ClickableImageButton.Types.TONE);
+    }
+
     @Click(R.id.button_1)
     public void onButton1Click() {
         Log.d(TAG, "#" + index + " onButton1Click");

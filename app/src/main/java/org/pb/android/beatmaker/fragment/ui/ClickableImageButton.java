@@ -34,6 +34,7 @@ public class ClickableImageButton extends FrameLayout {
     SoundManager soundManager;
 
     private boolean on;
+    private Types type;
 
     public ClickableImageButton(@NonNull Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
@@ -63,5 +64,17 @@ public class ClickableImageButton extends FrameLayout {
             case TONE:
                 break;
         }
+    }
+
+    public boolean getState() {
+        return on;
+    }
+
+    public void setType(Types type) {
+        this.type = type;
+    }
+
+    public Types getType() {
+        return type;
     }
 }

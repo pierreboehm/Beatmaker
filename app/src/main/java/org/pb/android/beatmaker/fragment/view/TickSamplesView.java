@@ -2,9 +2,9 @@ package org.pb.android.beatmaker.fragment.view;
 
 import android.content.Context;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 
 import org.androidannotations.annotations.AfterViews;
@@ -30,7 +30,10 @@ public class TickSamplesView extends View {
     SoundManager soundManager;
 
     private List<ContentTickContainer> tickSamplesList = new ArrayList<>();
-    private Paint activeColor, inactiveColor;
+    private Paint activeColor, inactiveColor, frameColor;
+
+    private int completeWidth = 0, visibleWidth = 0;
+    private int scrollXPosition = 0;
 
     public TickSamplesView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -47,6 +50,11 @@ public class TickSamplesView extends View {
         inactiveColor = new Paint();
         inactiveColor.setColor(getContext().getColor(R.color.blue_light_78));
         inactiveColor.setStyle(Paint.Style.FILL);
+
+        frameColor = new Paint();
+        frameColor.setColor(Color.WHITE);
+        frameColor.setStyle(Paint.Style.STROKE);
+        frameColor.setStrokeWidth(2f);
     }
 
     @UiThread
@@ -57,6 +65,7 @@ public class TickSamplesView extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         drawSamples(canvas);
+        drawScrollFrame(canvas);
         super.onDraw(canvas);
     }
 
@@ -69,6 +78,17 @@ public class TickSamplesView extends View {
         refreshUi();
     }
 
+    public void setupScrollFrame(int completeWidth, int visibleWidth) {
+        this.completeWidth = completeWidth;
+        this.visibleWidth = visibleWidth;
+        refreshUi();
+    }
+
+    public void updateScrollPosition(int scrollXPosition) {
+        this.scrollXPosition = scrollXPosition;
+        refreshUi();
+    }
+
     public void setTickSamplesList(List<ContentTickContainer> tickSamplesList) {
         this.tickSamplesList = tickSamplesList;
         refreshUi();
@@ -78,8 +98,6 @@ public class TickSamplesView extends View {
         if (tickSamplesList.isEmpty()) {
             return;
         }
-
-        Log.d(TAG, "samples=" + tickSamplesList.size() + ", ticks per sample=" + tickSamplesList.get(0).getClickableImageButtons().size());
 
         int samples = tickSamplesList.size();
         int ticksPerSample = tickSamplesList.get(0).getClickableImageButtons().size();
@@ -117,6 +135,17 @@ public class TickSamplesView extends View {
             offsetX += space;
             offsetY = offsetRow;
         }
+    }
+
+    private void drawScrollFrame(Canvas canvas) {
+        if (completeWidth == 0 || visibleWidth == 0) {
+            return;
+        }
+
+        int frameWidth = visibleWidth * canvas.getWidth() / completeWidth;
+        int scrollX = scrollXPosition * canvas.getWidth() / completeWidth;
+
+        canvas.drawRect(scrollX, 20, scrollX + frameWidth, canvas.getHeight() - 20, frameColor);
     }
 
     private void playSamples(int tickIndex) {

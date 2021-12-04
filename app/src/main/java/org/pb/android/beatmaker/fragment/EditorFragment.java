@@ -1,7 +1,10 @@
 package org.pb.android.beatmaker.fragment;
 
 import android.annotation.SuppressLint;
+import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
+import android.widget.HorizontalScrollView;
 
 import androidx.fragment.app.Fragment;
 
@@ -26,6 +29,9 @@ public class EditorFragment extends Fragment {
 
     public static final String TAG = EditorFragment.class.getSimpleName();
 
+    @ViewById(R.id.contentSamplesScrollContainer)
+    HorizontalScrollView contentSamplesScrollContainer;
+
     @ViewById(R.id.contentSamplesContainer)
     ViewGroup contentSamplesContainer;
 
@@ -34,10 +40,12 @@ public class EditorFragment extends Fragment {
 
     private List<ContentTickContainer> contentTickContainerList = new ArrayList<>();
 
-    // TODO
     @AfterViews
     public void initViews() {
         setupContentTickHolders();
+
+        contentSamplesScrollContainer.setOnScrollChangeListener(ScrollContainerListener);
+        contentSamplesScrollContainer.getViewTreeObserver().addOnGlobalLayoutListener(ScrollContainerLayoutListener);
     }
 
     @Override
@@ -66,4 +74,18 @@ public class EditorFragment extends Fragment {
 
         tickSamplesView.setTickSamplesList(contentTickContainerList);
     }
+
+    private ViewTreeObserver.OnGlobalLayoutListener ScrollContainerLayoutListener = new ViewTreeObserver.OnGlobalLayoutListener() {
+        @Override
+        public void onGlobalLayout() {
+            tickSamplesView.setupScrollFrame(contentSamplesContainer.getWidth(), contentSamplesScrollContainer.getWidth());
+        }
+    };
+
+    private View.OnScrollChangeListener ScrollContainerListener = new View.OnScrollChangeListener() {
+        @Override
+        public void onScrollChange(View view, int scrollX, int i1, int i2, int i3) {
+            tickSamplesView.updateScrollPosition(scrollX);
+        }
+    };
 }

@@ -63,6 +63,7 @@
         </LinearLayout>
 
         <HorizontalScrollView
+            android:id="@+id/contentSamplesScrollContainer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:isScrollContainer="true"

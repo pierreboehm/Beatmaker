@@ -8,9 +8,13 @@ import androidx.fragment.app.Fragment;
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.ViewById;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 import org.pb.android.beatmaker.R;
 import org.pb.android.beatmaker.data.ContentTickContainer;
 import org.pb.android.beatmaker.data.ContentTickContainer_;
+import org.pb.android.beatmaker.event.Events;
 import org.pb.android.beatmaker.fragment.view.TickSamplesView;
 
 import java.util.ArrayList;
@@ -34,6 +38,23 @@ public class EditorFragment extends Fragment {
     @AfterViews
     public void initViews() {
         setupContentTickHolders();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    public void onPause() {
+        EventBus.getDefault().unregister(this);
+        super.onPause();
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(Events.TickStateChangedEvent event) {
+        tickSamplesView.tickStateChanged(event);
     }
 
     private void setupContentTickHolders() {

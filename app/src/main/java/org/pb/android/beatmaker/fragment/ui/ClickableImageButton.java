@@ -23,7 +23,7 @@ public class ClickableImageButton extends FrameLayout {
 
     private static final String TAG = ClickableImageButton.class.getSimpleName();
 
-    public enum Types {
+    public enum TickTypes {
         KICK, SNARE, HIHAT, TONE
     }
 
@@ -34,7 +34,7 @@ public class ClickableImageButton extends FrameLayout {
     SoundManager soundManager;
 
     private boolean on;
-    private Types type;
+    private TickTypes type;
 
     public ClickableImageButton(@NonNull Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
@@ -44,7 +44,11 @@ public class ClickableImageButton extends FrameLayout {
         ivImage.setImageResource(resourceId);
     }
 
-    public void setState(Types type) {
+    public void setState(boolean tickState) {
+        on = tickState;
+    }
+
+    public void setState(TickTypes type) {
         on = !on;
 
         if (on) {
@@ -70,11 +74,11 @@ public class ClickableImageButton extends FrameLayout {
         return on;
     }
 
-    public void setType(Types type) {
+    public void setType(TickTypes type) {
         this.type = type;
     }
 
-    public Types getType() {
+    public TickTypes getType() {
         return type;
     }
 }

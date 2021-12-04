@@ -4,14 +4,18 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EView;
+import org.androidannotations.annotations.UiThread;
 import org.pb.android.beatmaker.R;
 import org.pb.android.beatmaker.data.ContentTickContainer;
+import org.pb.android.beatmaker.event.Events;
 import org.pb.android.beatmaker.fragment.ui.ClickableImageButton;
+import org.pb.android.beatmaker.fragment.ui.ClickableImageButton.TickTypes;
 import org.pb.android.beatmaker.sound.SoundManager;
 
 import java.util.ArrayList;
@@ -26,7 +30,7 @@ public class TickSamplesView extends View {
     SoundManager soundManager;
 
     private List<ContentTickContainer> tickSamplesList = new ArrayList<>();
-    private Paint inactiveColor;
+    private Paint activeColor, inactiveColor;
 
     public TickSamplesView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -36,9 +40,18 @@ public class TickSamplesView extends View {
     public void initViews() {
         setWillNotDraw(false);
 
+        activeColor = new Paint();
+        activeColor.setColor(getContext().getColor(R.color.blue_cyan));
+        activeColor.setStyle(Paint.Style.FILL);
+
         inactiveColor = new Paint();
-        inactiveColor.setColor(getContext().getColor(R.color.blue_cyan));
+        inactiveColor.setColor(getContext().getColor(R.color.blue_light_78));
         inactiveColor.setStyle(Paint.Style.FILL);
+    }
+
+    @UiThread
+    public void refreshUi() {
+        invalidate();
     }
 
     @Override
@@ -47,31 +60,57 @@ public class TickSamplesView extends View {
         super.onDraw(canvas);
     }
 
+    public void tickStateChanged(Events.TickStateChangedEvent event) {
+        int samplesIndex = event.getSampleIndex();
+        TickTypes tickType = event.getTickType();
+        boolean tickState = event.getTickState();
+
+        tickSamplesList.get(samplesIndex).getClickableImageButtons().get(tickType.ordinal()).setState(tickState);
+        refreshUi();
+    }
+
     public void setTickSamplesList(List<ContentTickContainer> tickSamplesList) {
         this.tickSamplesList = tickSamplesList;
+        refreshUi();
     }
 
     private void drawSamples(Canvas canvas) {
+        if (tickSamplesList.isEmpty()) {
+            return;
+        }
+
+        Log.d(TAG, "samples=" + tickSamplesList.size() + ", ticks per sample=" + tickSamplesList.get(0).getClickableImageButtons().size());
+
+        int samples = tickSamplesList.size();
+        int ticksPerSample = tickSamplesList.get(0).getClickableImageButtons().size();
+
         int width = canvas.getWidth();
         int height = canvas.getHeight();
 
         int space = 10;
-        int size = (width - (32 * space)) / 32;
+        int size = (width - (samples * space)) / samples;
 
-        int offsetCol = (width / 2) - ((size + space) * 32 / 2) + (space / 2);
-        int offsetRow = (height / 2) - ((size + space) * 4 / 2) + (space / 2);
+        int offsetCol = (width / 2) - ((size + space) * samples / 2) + (space / 2);
+        int offsetRow = (height / 2) - ((size + space) * ticksPerSample / 2) + (space / 2);
 
         int offsetX = offsetCol;
         int offsetY = offsetRow;
 
-        for (int row = 1; row <= 32; row++) {
+        ContentTickContainer tickContainer;
+        ClickableImageButton clickableImageButton;
 
-            for (int col = 1; col <= 4; col++) {
+        for (int row = 1; row <= samples; row++) {
+
+            tickContainer = tickSamplesList.get(row - 1);
+
+            for (int col = 1; col <= ticksPerSample; col++) {
 
                 int x = offsetX + (size * (row - 1));
                 int y = offsetY + (size * (col - 1));
 
-                canvas.drawRect(x, y, x + size, y + size, inactiveColor);
+                clickableImageButton = tickContainer.getClickableImageButtons().get(col - 1);
+
+                canvas.drawRect(x, y, x + size, y + size, clickableImageButton.getState() ? activeColor : inactiveColor);
                 offsetY += space;
             }
 

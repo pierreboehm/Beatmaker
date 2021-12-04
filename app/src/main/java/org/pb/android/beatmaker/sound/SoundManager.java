@@ -23,12 +23,12 @@ public class SoundManager {
     private SoundPool soundPool;
     private int kickSoundIndex, snareSoundIndex, hihatSoundIndex, toneSoundIndex;
 
-    private Map<ClickableImageButton.Types, Integer> soundBank = new HashMap<ClickableImageButton.Types, Integer>()
+    private Map<ClickableImageButton.TickTypes, Integer> soundBank = new HashMap<ClickableImageButton.TickTypes, Integer>()
     {{
-        put(ClickableImageButton.Types.KICK, R.raw.boom_kick);
-        put(ClickableImageButton.Types.SNARE, R.raw.hip_hop_snare_1);
-        put(ClickableImageButton.Types.HIHAT, R.raw.closed_hihat_1);
-        put(ClickableImageButton.Types.TONE, R.raw.hi_tom_1);
+        put(ClickableImageButton.TickTypes.KICK, R.raw.boom_kick);
+        put(ClickableImageButton.TickTypes.SNARE, R.raw.hip_hop_snare_1);
+        put(ClickableImageButton.TickTypes.HIHAT, R.raw.closed_hihat_1);
+        put(ClickableImageButton.TickTypes.TONE, R.raw.hi_tom_1);
     }};
 
     @AfterInject
@@ -44,13 +44,13 @@ public class SoundManager {
                 .setAudioAttributes(audioAttributes)
                 .build();
 
-        kickSoundIndex = soundPool.load(context, soundBank.get(ClickableImageButton.Types.KICK), 1);
-        snareSoundIndex = soundPool.load(context, soundBank.get(ClickableImageButton.Types.SNARE), 1);
-        hihatSoundIndex = soundPool.load(context, soundBank.get(ClickableImageButton.Types.HIHAT), 1);
-        toneSoundIndex = soundPool.load(context, soundBank.get(ClickableImageButton.Types.TONE), 1);
+        kickSoundIndex = soundPool.load(context, soundBank.get(ClickableImageButton.TickTypes.KICK), 1);
+        snareSoundIndex = soundPool.load(context, soundBank.get(ClickableImageButton.TickTypes.SNARE), 1);
+        hihatSoundIndex = soundPool.load(context, soundBank.get(ClickableImageButton.TickTypes.HIHAT), 1);
+        toneSoundIndex = soundPool.load(context, soundBank.get(ClickableImageButton.TickTypes.TONE), 1);
     }
 
-    public void playSound(ClickableImageButton.Types type) {
+    public void playSound(ClickableImageButton.TickTypes type) {
         switch (type) {
             case KICK:
                 soundPool.play(kickSoundIndex, DEFAULT_VOLUME, DEFAULT_VOLUME, 1, 0, 1f);

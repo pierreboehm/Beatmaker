@@ -5,10 +5,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.HorizontalScrollView;
+import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
 
 import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.ViewById;
 import org.greenrobot.eventbus.EventBus;
@@ -38,6 +40,9 @@ public class EditorFragment extends Fragment {
     @ViewById(R.id.tickSamplesView)
     TickSamplesView tickSamplesView;
 
+    @ViewById(R.id.valueVolume)
+    TextView valueVolume;
+
     private List<ContentTickContainer> contentTickContainerList = new ArrayList<>();
 
     @AfterViews
@@ -58,6 +63,20 @@ public class EditorFragment extends Fragment {
     public void onPause() {
         EventBus.getDefault().unregister(this);
         super.onPause();
+    }
+
+    @Click(R.id.btnDecrementVolume)
+    public void onDecrementVolumeClick() {
+        int volumeValue = Integer.parseInt(valueVolume.getText().toString());
+        int volumeValueNew = Math.max(volumeValue - 1, 0);
+        valueVolume.setText(String.format("%s", volumeValueNew));
+    }
+
+    @Click(R.id.btnIncrementVolume)
+    public void onIncrementVolumeClick() {
+        int volumeValue = Integer.parseInt(valueVolume.getText().toString());
+        int volumeValueNew = Math.min(volumeValue + 1, 300);
+        valueVolume.setText(String.format("%s", volumeValueNew));
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

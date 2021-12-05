@@ -54,7 +54,7 @@ public class TickSamplesView extends View {
         frameColor = new Paint();
         frameColor.setColor(Color.WHITE);
         frameColor.setStyle(Paint.Style.STROKE);
-        frameColor.setStrokeWidth(2f);
+        frameColor.setStrokeWidth(3f);
     }
 
     @UiThread

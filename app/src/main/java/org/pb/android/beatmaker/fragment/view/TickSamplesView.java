@@ -35,7 +35,6 @@ public class TickSamplesView extends View {
     private int completeWidth = 0, visibleWidth = 0;
     private int scrollXPosition = 0;
 
-    private boolean isPlaying = false;
     private int samplePlayIndex = -1;
 
     public TickSamplesView(Context context, AttributeSet attrs) {
@@ -173,11 +172,9 @@ public class TickSamplesView extends View {
         }
 
         int offsetX = 10;
-
         int cellWidth = canvas.getWidth() / tickSamplesList.size();
         int x = offsetX + (samplePlayIndex * cellWidth) + (cellWidth / 2);
-        // calculate x
-        // draw oval at x-position in activeColor over indicated sample
+
         canvas.drawOval(x - 9f, 0f, x + 9f, 18f, activeColor);
     }
 }

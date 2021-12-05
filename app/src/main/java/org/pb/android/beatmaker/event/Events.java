@@ -40,4 +40,16 @@ public class Events {
         }
     }
 
+    public static class GraficalSoundEvent {
+        private final TickTypes tickType;
+
+        public GraficalSoundEvent(TickTypes tickType) {
+            this.tickType = tickType;
+        }
+
+        public TickTypes getTickType() {
+            return tickType;
+        }
+    }
+
 }

@@ -22,6 +22,7 @@ import org.pb.android.beatmaker.R;
 import org.pb.android.beatmaker.data.ContentTickContainer;
 import org.pb.android.beatmaker.data.ContentTickContainer_;
 import org.pb.android.beatmaker.event.Events;
+import org.pb.android.beatmaker.fragment.view.GraficalSoundView;
 import org.pb.android.beatmaker.fragment.view.TickSamplesView;
 import org.pb.android.beatmaker.sound.SoundManager;
 
@@ -42,6 +43,9 @@ public class EditorFragment extends Fragment {
 
     @ViewById(R.id.tickSamplesView)
     TickSamplesView tickSamplesView;
+
+    @ViewById(R.id.graficalSoundView)
+    GraficalSoundView graficalSoundView;
 
     @ViewById(R.id.bpmValue)
     TextView bpmTextValue;
@@ -100,6 +104,11 @@ public class EditorFragment extends Fragment {
     public void onEvent(Events.SamplePlayEvent event) {
         tickSamplesView.playTicks(event.getSampleIndex());
         Log.d(TAG, "sample # " + event.getSampleIndex());
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(Events.GraficalSoundEvent event) {
+        graficalSoundView.handleSoundEvent(event);
     }
 
     private void setupContentTickHolders() {

@@ -79,6 +79,8 @@ public class SoundManager {
                 soundPool.play(toneSoundIndex, DEFAULT_VOLUME, DEFAULT_VOLUME, 1, 0, 1f);
                 break;
         }
+
+        EventBus.getDefault().post(new Events.GraficalSoundEvent(type));
     }
 
     public void playSamples(List<ContentTickContainer> tickSamplesList, int bpmValue) {

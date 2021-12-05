@@ -35,6 +35,9 @@ public class TickSamplesView extends View {
     private int completeWidth = 0, visibleWidth = 0;
     private int scrollXPosition = 0;
 
+    private boolean isPlaying = false;
+    private int samplePlayIndex = -1;
+
     public TickSamplesView(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
@@ -66,6 +69,7 @@ public class TickSamplesView extends View {
     protected void onDraw(Canvas canvas) {
         drawSamples(canvas);
         drawScrollFrame(canvas);
+        drawSamplePlayingFrame(canvas);
         super.onDraw(canvas);
     }
 
@@ -92,6 +96,21 @@ public class TickSamplesView extends View {
     public void setTickSamplesList(List<ContentTickContainer> tickSamplesList) {
         this.tickSamplesList = tickSamplesList;
         refreshUi();
+    }
+
+    public void playTicks(int sampleIndex) {
+        samplePlayIndex = sampleIndex;
+        refreshUi();
+
+        ContentTickContainer tickContainer = tickSamplesList.get(sampleIndex);
+        List<ClickableImageButton> clickableImageButtonList = tickContainer.getClickableImageButtons();
+
+        for (ClickableImageButton clickableImageButton : clickableImageButtonList) {
+            if (clickableImageButton.getState()) {
+                soundManager.playSound(clickableImageButton.getType());
+            }
+        }
+
     }
 
     private void drawSamples(Canvas canvas) {
@@ -143,21 +162,22 @@ public class TickSamplesView extends View {
         }
 
         int frameWidth = visibleWidth * canvas.getWidth() / completeWidth;
-        int scrollX = scrollXPosition * canvas.getWidth() / completeWidth;
+        int scrollX = (scrollXPosition * canvas.getWidth() / completeWidth) + 1;
 
-        canvas.drawRect(scrollX, 20, scrollX + frameWidth, canvas.getHeight() - 20, frameColor);
+        canvas.drawRect(scrollX, 30, scrollX + frameWidth, canvas.getHeight() - 30, frameColor);
     }
 
-    private void playSamples(int tickIndex) {
-        for (ContentTickContainer tickContainer : tickSamplesList) {
-
-            List<ClickableImageButton> clickableImageButtonList = tickContainer.getClickableImageButtons();
-
-            for (ClickableImageButton clickableImageButton : clickableImageButtonList) {
-                if (clickableImageButton.getState()) {
-                    soundManager.playSound(clickableImageButton.getType());
-                }
-            }
+    private void drawSamplePlayingFrame(Canvas canvas) {
+        if (samplePlayIndex == -1 || tickSamplesList.isEmpty()) {
+            return;
         }
+
+        int offsetX = 10;
+
+        int cellWidth = canvas.getWidth() / tickSamplesList.size();
+        int x = offsetX + (samplePlayIndex * cellWidth) + (cellWidth / 2);
+        // calculate x
+        // draw oval at x-position in activeColor over indicated sample
+        canvas.drawOval(x - 9f, 0f, x + 9f, 18f, activeColor);
     }
 }

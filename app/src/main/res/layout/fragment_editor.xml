@@ -31,10 +31,10 @@
             />
 
         <TextView
-            android:id="@+id/valueVolume"
+            android:id="@+id/bpmValue"
             android:layout_width="80dp"
             android:layout_height="wrap_content"
-            android:text="103"
+            android:text="100"
             android:textColor="@android:color/white"
             android:textStyle="bold"
             android:textSize="30dp"
@@ -65,7 +65,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="10dp">
+            android:padding="2dp">
 
             <ImageView
                 android:layout_width="52dp"

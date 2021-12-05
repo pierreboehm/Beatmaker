@@ -28,4 +28,16 @@ public class Events {
         }
     }
 
+    public static class SamplePlayEvent {
+        private final int sampleIndex;
+
+        public SamplePlayEvent(int sampleIndex) {
+            this.sampleIndex = sampleIndex;
+        }
+
+        public int getSampleIndex() {
+            return sampleIndex;
+        }
+    }
+
 }

@@ -1,6 +1,7 @@
 package org.pb.android.beatmaker.fragment;
 
 import android.annotation.SuppressLint;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
@@ -10,6 +11,7 @@ import android.widget.TextView;
 import androidx.fragment.app.Fragment;
 
 import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.ViewById;
@@ -21,6 +23,7 @@ import org.pb.android.beatmaker.data.ContentTickContainer;
 import org.pb.android.beatmaker.data.ContentTickContainer_;
 import org.pb.android.beatmaker.event.Events;
 import org.pb.android.beatmaker.fragment.view.TickSamplesView;
+import org.pb.android.beatmaker.sound.SoundManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,8 +43,11 @@ public class EditorFragment extends Fragment {
     @ViewById(R.id.tickSamplesView)
     TickSamplesView tickSamplesView;
 
-    @ViewById(R.id.valueVolume)
-    TextView valueVolume;
+    @ViewById(R.id.bpmValue)
+    TextView bpmTextValue;
+
+    @Bean
+    SoundManager soundManager;
 
     private List<ContentTickContainer> contentTickContainerList = new ArrayList<>();
 
@@ -67,21 +73,33 @@ public class EditorFragment extends Fragment {
 
     @Click(R.id.btnDecrementVolume)
     public void onDecrementVolumeClick() {
-        int volumeValue = Integer.parseInt(valueVolume.getText().toString());
-        int volumeValueNew = Math.max(volumeValue - 1, 0);
-        valueVolume.setText(String.format("%s", volumeValueNew));
+        int bpmValue = Integer.parseInt(bpmTextValue.getText().toString());
+        int bpmValueNew = Math.max(bpmValue - 1, 0);
+        bpmTextValue.setText(String.format("%s", bpmValueNew));
     }
 
     @Click(R.id.btnIncrementVolume)
     public void onIncrementVolumeClick() {
-        int volumeValue = Integer.parseInt(valueVolume.getText().toString());
-        int volumeValueNew = Math.min(volumeValue + 1, 300);
-        valueVolume.setText(String.format("%s", volumeValueNew));
+        int bpmValue = Integer.parseInt(bpmTextValue.getText().toString());
+        int bpmValueNew = Math.min(bpmValue + 1, 300);
+        bpmTextValue.setText(String.format("%s", bpmValueNew));
+    }
+
+    @Click(R.id.tickSamplesView)
+    public void onTickSamplesViewClick() {
+        int bpmValue = Integer.parseInt(bpmTextValue.getText().toString());
+        soundManager.playSamples(contentTickContainerList, bpmValue);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(Events.TickStateChangedEvent event) {
         tickSamplesView.tickStateChanged(event);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(Events.SamplePlayEvent event) {
+        tickSamplesView.playTicks(event.getSampleIndex());
+        Log.d(TAG, "sample # " + event.getSampleIndex());
     }
 
     private void setupContentTickHolders() {

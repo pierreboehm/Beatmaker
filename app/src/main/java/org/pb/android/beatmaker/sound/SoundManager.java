@@ -98,6 +98,8 @@ public class SoundManager {
 
         playerSampleIndex = startIndex;
         int tickValue = (int) (60f / (float) bpmValue * 2f * 100f);     // FIXME: is that correct?
+        // 82,5bpm here is as 103bpm
+        //int tickValue = 582;
 
         tickTimer.scheduleAtFixedRate(new TimerTask() {
             @Override

@@ -42,10 +42,10 @@ public class GraficalSoundView extends View {
         snareColor.setStrokeWidth(40f);
 
         hiHatColor = new Paint();
-        hiHatColor.setColor(getContext().getColor(R.color.purple_200));
+        hiHatColor.setColor(getContext().getColor(R.color.purple_700));
         hiHatColor.setAlpha(80);
         hiHatColor.setStyle(Paint.Style.STROKE);
-        hiHatColor.setStrokeWidth(20f);
+        hiHatColor.setStrokeWidth(10f);
 
         refreshUi();
     }
@@ -137,5 +137,6 @@ public class GraficalSoundView extends View {
     private void drawHiHatOval(Canvas canvas) {
         hiHatColor.setAlpha(alphaHiHat);
         canvas.drawOval(canvas.getWidth() / 2f - 240f, canvas.getHeight() / 2f + 240f, canvas.getWidth() / 2f + 240f, canvas.getHeight() / 2f - 240f, hiHatColor);
+        refreshUi();
     }
 }

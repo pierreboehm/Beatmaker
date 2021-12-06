@@ -41,7 +41,7 @@
             android:id="@+id/bpmValue"
             android:layout_width="80dp"
             android:layout_height="wrap_content"
-            android:text="100"
+            android:text="83"
             android:textColor="@android:color/white"
             android:textStyle="bold"
             android:textSize="30dp"

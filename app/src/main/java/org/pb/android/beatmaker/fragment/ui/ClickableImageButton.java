@@ -15,6 +15,7 @@ import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EViewGroup;
 import org.androidannotations.annotations.ViewById;
 import org.pb.android.beatmaker.R;
+import org.pb.android.beatmaker.data.SoundTypeResource.SoundType;
 import org.pb.android.beatmaker.sound.SoundManager;
 
 @SuppressLint("NonConstantResourceId")
@@ -23,10 +24,6 @@ public class ClickableImageButton extends FrameLayout {
 
     private static final String TAG = ClickableImageButton.class.getSimpleName();
 
-    public enum TickTypes {
-        KICK, SNARE, HIHAT, TONE
-    }
-
     @ViewById
     ImageView ivImage;
 
@@ -34,7 +31,7 @@ public class ClickableImageButton extends FrameLayout {
     SoundManager soundManager;
 
     private boolean on;
-    private TickTypes type;
+    private SoundType type;
 
     public ClickableImageButton(@NonNull Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
@@ -48,7 +45,7 @@ public class ClickableImageButton extends FrameLayout {
         on = tickState;
     }
 
-    public void setState(TickTypes type) {
+    public void setState(SoundType type) {
         on = !on;
 
         if (on) {
@@ -74,11 +71,11 @@ public class ClickableImageButton extends FrameLayout {
         return on;
     }
 
-    public void setType(TickTypes type) {
+    public void setType(SoundType type) {
         this.type = type;
     }
 
-    public TickTypes getType() {
+    public SoundType getType() {
         return type;
     }
 }

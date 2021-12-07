@@ -10,6 +10,8 @@ import org.androidannotations.annotations.RootContext;
 import org.greenrobot.eventbus.EventBus;
 import org.pb.android.beatmaker.R;
 import org.pb.android.beatmaker.data.ContentTickContainer;
+import org.pb.android.beatmaker.data.SoundTypeResource;
+import org.pb.android.beatmaker.data.SoundTypeResource.SoundType;
 import org.pb.android.beatmaker.event.Events;
 import org.pb.android.beatmaker.fragment.ui.ClickableImageButton;
 
@@ -31,12 +33,12 @@ public class SoundManager {
     private int kickSoundIndex, snareSoundIndex, hihatSoundIndex, toneSoundIndex;
     private int playerSampleIndex = 0;
 
-    private Map<ClickableImageButton.TickTypes, Integer> soundBank = new HashMap<ClickableImageButton.TickTypes, Integer>()
+    private Map<SoundType, Integer> soundBank = new HashMap<SoundType, Integer>()
     {{
-        put(ClickableImageButton.TickTypes.KICK, R.raw.boom_kick);
-        put(ClickableImageButton.TickTypes.SNARE, R.raw.hip_hop_snare_1);
-        put(ClickableImageButton.TickTypes.HIHAT, R.raw.closed_hihat_1);
-        put(ClickableImageButton.TickTypes.TONE, R.raw.hi_tom_1);
+        put(SoundType.KICK, R.raw.boom_kick);
+        put(SoundType.SNARE, R.raw.hip_hop_snare_1);
+        put(SoundType.HIHAT, R.raw.closed_hihat_1);
+        put(SoundType.TONE, R.raw.hi_tom_1);
     }};
 
     @AfterInject
@@ -52,13 +54,13 @@ public class SoundManager {
                 .setAudioAttributes(audioAttributes)
                 .build();
 
-        kickSoundIndex = soundPool.load(context, soundBank.get(ClickableImageButton.TickTypes.KICK), 1);
-        snareSoundIndex = soundPool.load(context, soundBank.get(ClickableImageButton.TickTypes.SNARE), 1);
-        hihatSoundIndex = soundPool.load(context, soundBank.get(ClickableImageButton.TickTypes.HIHAT), 1);
-        toneSoundIndex = soundPool.load(context, soundBank.get(ClickableImageButton.TickTypes.TONE), 1);
+        kickSoundIndex = soundPool.load(context, soundBank.get(SoundType.KICK), 1);
+        snareSoundIndex = soundPool.load(context, soundBank.get(SoundType.SNARE), 1);
+        hihatSoundIndex = soundPool.load(context, soundBank.get(SoundType.HIHAT), 1);
+        toneSoundIndex = soundPool.load(context, soundBank.get(SoundType.TONE), 1);
     }
 
-    public void playSound(ClickableImageButton.TickTypes type) {
+    public void playSound(SoundType type) {
 
         soundPool.stop(kickSoundIndex);
         soundPool.stop(snareSoundIndex);

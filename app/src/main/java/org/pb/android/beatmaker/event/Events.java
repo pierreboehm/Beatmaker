@@ -1,17 +1,17 @@
 package org.pb.android.beatmaker.event;
 
-import org.pb.android.beatmaker.fragment.ui.ClickableImageButton.TickTypes;
+import org.pb.android.beatmaker.data.SoundTypeResource.SoundType;
 
 public class Events {
 
     public static class TickStateChangedEvent {
         private final boolean tickState;
         private final int sampleIndex;
-        private final TickTypes tickType;
+        private final SoundType soundType;
 
-        public TickStateChangedEvent(int sampleIndex, TickTypes tickType, boolean tickState) {
+        public TickStateChangedEvent(int sampleIndex, SoundType soundType, boolean tickState) {
             this.sampleIndex = sampleIndex;
-            this.tickType = tickType;
+            this.soundType = soundType;
             this.tickState = tickState;
         }
 
@@ -19,8 +19,8 @@ public class Events {
             return tickState;
         }
 
-        public TickTypes getTickType() {
-            return tickType;
+        public SoundType getSoundType() {
+            return soundType;
         }
 
         public int getSampleIndex() {
@@ -41,14 +41,14 @@ public class Events {
     }
 
     public static class GraficalSoundEvent {
-        private final TickTypes tickType;
+        private final SoundType soundType;
 
-        public GraficalSoundEvent(TickTypes tickType) {
-            this.tickType = tickType;
+        public GraficalSoundEvent(SoundType soundType) {
+            this.soundType = soundType;
         }
 
-        public TickTypes getTickType() {
-            return tickType;
+        public SoundType getSoundType() {
+            return soundType;
         }
     }
 

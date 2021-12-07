@@ -11,7 +11,6 @@ import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EView;
 import org.androidannotations.annotations.UiThread;
-import org.greenrobot.eventbus.EventBus;
 import org.pb.android.beatmaker.R;
 import org.pb.android.beatmaker.data.ContentTickContainer;
 import org.pb.android.beatmaker.event.Events;
@@ -75,7 +74,7 @@ public class TickSamplesView extends View {
 
     public void tickStateChanged(Events.TickStateChangedEvent event) {
         int samplesIndex = event.getSampleIndex();
-        TickTypes tickType = event.getTickType();
+        TickTypes tickType = event.getSoundType();
         boolean tickState = event.getTickState();
 
         tickSamplesList.get(samplesIndex).getClickableImageButtons().get(tickType.ordinal()).setState(tickState);

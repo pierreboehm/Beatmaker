@@ -67,7 +67,7 @@ public class GraficalSoundView extends View {
     }
 
     public void handleSoundEvent(Events.GraficalSoundEvent event) {
-        switch (event.getTickType()) {
+        switch (event.getSoundType()) {
             case KICK:
                 drawKick();
                 break;

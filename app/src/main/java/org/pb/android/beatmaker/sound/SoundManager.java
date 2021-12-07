@@ -60,6 +60,15 @@ public class SoundManager {
         toneSoundIndex = soundPool.load(context, soundBank.get(SoundType.TONE), 1);
     }
 
+    public void reloadSoundBank(Integer kickResourceId, Integer snareResourceId, Integer hiHatResourceId, Integer toneResourceId) {
+        soundBank.replace(SoundType.KICK, kickResourceId);
+        soundBank.replace(SoundType.SNARE, snareResourceId);
+        soundBank.replace(SoundType.HIHAT, hiHatResourceId);
+        soundBank.replace(SoundType.TONE, toneResourceId);
+
+        initSoundManager();
+    }
+
     public void playSound(SoundType type) {
 
         soundPool.stop(kickSoundIndex);
@@ -93,13 +102,17 @@ public class SoundManager {
         }
     }
 
+    public boolean isNotSamplesPlaying() {
+        return tickTimer == null;
+    }
+
     private void startPlaying(final int startIndex, final int endIndex, int bpmValue) {
         if (tickTimer == null) {
             tickTimer = new Timer();
         }
 
         playerSampleIndex = startIndex;
-        int tickValue = (int) (60f / (float) bpmValue * 2f * 100f);     // FIXME: is that correct?
+        int tickValue = (int) (60f / (float) bpmValue * 2f * 100f);     // FIXME: is that correct? no!
         // 82,5bpm here is as 103bpm
         //int tickValue = 582;
 

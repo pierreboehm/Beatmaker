@@ -57,6 +57,7 @@ public class EditorFragment extends Fragment {
 
     @AfterViews
     public void initViews() {
+
         setupContentTickHolders();
 
         contentSamplesScrollContainer.setOnScrollChangeListener(ScrollContainerListener);

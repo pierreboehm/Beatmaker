@@ -49,7 +49,9 @@ public class ClickableImageButton extends FrameLayout {
         on = !on;
 
         if (on) {
-            soundManager.playSound(type);
+            if (soundManager.isNotSamplesPlaying()) {
+                soundManager.playSound(type);
+            }
         }
 
         switch (type) {

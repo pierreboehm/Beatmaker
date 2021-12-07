@@ -13,9 +13,9 @@ import org.androidannotations.annotations.EView;
 import org.androidannotations.annotations.UiThread;
 import org.pb.android.beatmaker.R;
 import org.pb.android.beatmaker.data.ContentTickContainer;
+import org.pb.android.beatmaker.data.SoundTypeResource;
 import org.pb.android.beatmaker.event.Events;
 import org.pb.android.beatmaker.fragment.ui.ClickableImageButton;
-import org.pb.android.beatmaker.fragment.ui.ClickableImageButton.TickTypes;
 import org.pb.android.beatmaker.sound.SoundManager;
 
 import java.util.ArrayList;
@@ -74,10 +74,10 @@ public class TickSamplesView extends View {
 
     public void tickStateChanged(Events.TickStateChangedEvent event) {
         int samplesIndex = event.getSampleIndex();
-        TickTypes tickType = event.getSoundType();
+        SoundTypeResource.SoundType soundType = event.getSoundType();
         boolean tickState = event.getTickState();
 
-        tickSamplesList.get(samplesIndex).getClickableImageButtons().get(tickType.ordinal()).setState(tickState);
+        tickSamplesList.get(samplesIndex).getClickableImageButtons().get(soundType.ordinal()).setState(tickState);
         refreshUi();
     }
 

@@ -1,5 +1,7 @@
 package org.pb.android.beatmaker.data;
 
+import androidx.annotation.Nullable;
+
 import org.pb.android.beatmaker.R;
 
 public class SoundTypeResource {
@@ -16,6 +18,7 @@ public class SoundTypeResource {
             this.resourceIds = resourceIds;
         }
 
+        @Nullable
         public int[] getResourceIdsOf(SoundType soundType) {
             switch (soundType) {
                 case KICK:

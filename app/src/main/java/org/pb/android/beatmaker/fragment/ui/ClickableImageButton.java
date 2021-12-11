@@ -37,12 +37,9 @@ public class ClickableImageButton extends FrameLayout {
         super(context, attrs);
     }
 
-    public void setImage(int resourceId) {
-        ivImage.setImageResource(resourceId);
-    }
-
     public void setState(boolean tickState) {
         on = tickState;
+        setImage();
     }
 
     public void setState(SoundType type) {
@@ -54,6 +51,22 @@ public class ClickableImageButton extends FrameLayout {
             }
         }
 
+        setImage();
+    }
+
+    public boolean getState() {
+        return on;
+    }
+
+    public void setType(SoundType type) {
+        this.type = type;
+    }
+
+    public SoundType getType() {
+        return type;
+    }
+
+    private void setImage() {
         switch (type) {
             case KICK:
                 ivImage.setBackgroundResource(on ? R.drawable.rounded_background_green : R.drawable.rounded_background_blue);
@@ -67,17 +80,5 @@ public class ClickableImageButton extends FrameLayout {
             case TONE:
                 break;
         }
-    }
-
-    public boolean getState() {
-        return on;
-    }
-
-    public void setType(SoundType type) {
-        this.type = type;
-    }
-
-    public SoundType getType() {
-        return type;
     }
 }

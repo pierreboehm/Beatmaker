@@ -3,17 +3,15 @@ package org.pb.android.beatmaker.sound;
 import android.content.Context;
 import android.media.AudioAttributes;
 import android.media.SoundPool;
+import android.util.Log;
 
 import org.androidannotations.annotations.AfterInject;
 import org.androidannotations.annotations.EBean;
 import org.androidannotations.annotations.RootContext;
 import org.greenrobot.eventbus.EventBus;
-import org.pb.android.beatmaker.R;
 import org.pb.android.beatmaker.data.ContentTickContainer;
-import org.pb.android.beatmaker.data.SoundTypeResource;
 import org.pb.android.beatmaker.data.SoundTypeResource.SoundType;
 import org.pb.android.beatmaker.event.Events;
-import org.pb.android.beatmaker.fragment.ui.ClickableImageButton;
 
 import java.util.HashMap;
 import java.util.List;
@@ -24,7 +22,9 @@ import java.util.TimerTask;
 @EBean(scope = EBean.Scope.Singleton)
 public class SoundManager {
 
+    private static final String TAG = SoundManager.class.getSimpleName();
     private static final float DEFAULT_VOLUME = .5f;
+
     @RootContext
     Context context;
 
@@ -35,10 +35,10 @@ public class SoundManager {
 
     private Map<SoundType, Integer> soundBank = new HashMap<SoundType, Integer>()
     {{
-        put(SoundType.KICK, R.raw.boom_kick);
-        put(SoundType.SNARE, R.raw.hip_hop_snare_1);
-        put(SoundType.HIHAT, R.raw.closed_hihat_1);
-        put(SoundType.TONE, R.raw.hi_tom_1);
+        put(SoundType.KICK, SoundType.KICK.getResourceById(0));
+        put(SoundType.SNARE, SoundType.SNARE.getResourceById(0));
+        put(SoundType.HIHAT, SoundType.HIHAT.getResourceById(0));
+        put(SoundType.TONE, SoundType.TONE.getResourceById(0));
     }};
 
     @AfterInject
@@ -53,6 +53,13 @@ public class SoundManager {
                 .setMaxStreams(4)
                 .setAudioAttributes(audioAttributes)
                 .build();
+
+        soundPool.setOnLoadCompleteListener(new SoundPool.OnLoadCompleteListener() {
+            @Override
+            public void onLoadComplete(SoundPool soundPool, int sampleId, int status) {
+                Log.d(TAG, "sampleId=" + sampleId + ", status=" + status + " (0=success)");
+            }
+        });
 
         kickSoundIndex = soundPool.load(context, soundBank.get(SoundType.KICK), 1);
         snareSoundIndex = soundPool.load(context, soundBank.get(SoundType.SNARE), 1);
@@ -70,12 +77,6 @@ public class SoundManager {
     }
 
     public void playSound(SoundType type) {
-
-        soundPool.stop(kickSoundIndex);
-        soundPool.stop(snareSoundIndex);
-        soundPool.stop(hihatSoundIndex);
-        soundPool.stop(toneSoundIndex);
-
         switch (type) {
             case KICK:
                 soundPool.play(kickSoundIndex, DEFAULT_VOLUME, DEFAULT_VOLUME, 1, 0, 1f);

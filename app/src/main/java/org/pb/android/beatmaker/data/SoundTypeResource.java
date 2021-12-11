@@ -7,10 +7,10 @@ import org.pb.android.beatmaker.R;
 public class SoundTypeResource {
 
     public enum SoundType {
-        KICK(new int[] {R.raw.bass_drum_1, R.raw.bass_drum_2, R.raw.bass_drum_3, R.raw.boom_kick}),
-        SNARE(new int[] {R.raw.hip_hop_snare_1}),
+        KICK(new int[] {R.raw.kick, R.raw.bass_drum_2, R.raw.bass_drum_3, R.raw.boom_kick}),
+        SNARE(new int[] {R.raw.snare, R.raw.hip_hop_snare_1}),
         HIHAT(new int[] {R.raw.closed_hihat_1}),
-        TONE(new int[] {});
+        TONE(new int[] {R.raw.hi_tom_1});
 
         private final int[] resourceIds;
 
@@ -32,6 +32,13 @@ public class SoundTypeResource {
                 default:
                     return null;
             }
+        }
+
+        public int getResourceById(int id) {
+            if (id < resourceIds.length) {
+                return resourceIds[id];
+            }
+            return 0;
         }
     }
 

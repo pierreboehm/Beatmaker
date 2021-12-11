@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.HorizontalScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 
@@ -21,6 +22,7 @@ import org.greenrobot.eventbus.ThreadMode;
 import org.pb.android.beatmaker.R;
 import org.pb.android.beatmaker.data.ContentTickContainer;
 import org.pb.android.beatmaker.data.ContentTickContainer_;
+import org.pb.android.beatmaker.data.sound.SoundSampleDao;
 import org.pb.android.beatmaker.event.Events;
 import org.pb.android.beatmaker.fragment.view.GraficalSoundView;
 import org.pb.android.beatmaker.fragment.view.TickSamplesView;
@@ -52,6 +54,9 @@ public class EditorFragment extends Fragment {
 
     @Bean
     SoundManager soundManager;
+
+    @Bean
+    SoundSampleDao soundSampleDao;
 
     private List<ContentTickContainer> contentTickContainerList = new ArrayList<>();
 
@@ -96,6 +101,18 @@ public class EditorFragment extends Fragment {
         soundManager.playSamples(contentTickContainerList, bpmValue);
     }
 
+    @Click(R.id.ivKick)
+    public void onKickClicked() {
+        soundSampleDao.saveSampleConfiguration("test", contentTickContainerList);
+        Toast.makeText(getContext(), "sample test saved", Toast.LENGTH_SHORT).show();
+    }
+
+    @Click(R.id.ivSnare)
+    public void onSnareClicked() {
+        soundSampleDao.deleteSample("test");
+        Toast.makeText(getContext(), "sample test deleted", Toast.LENGTH_SHORT).show();
+    }
+
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(Events.TickStateChangedEvent event) {
         tickSamplesView.tickStateChanged(event);
@@ -113,10 +130,19 @@ public class EditorFragment extends Fragment {
     }
 
     private void setupContentTickHolders() {
-        for (int index = 0; index <= 31; index++) {
-            ContentTickContainer tickContainer = ContentTickContainer_.build(getContext(), index);
-            contentSamplesContainer.addView(tickContainer);
-            contentTickContainerList.add(tickContainer);
+        List<ContentTickContainer> storedSample = soundSampleDao.loadSampleConfiguration("test");
+
+        if (storedSample.isEmpty()) {
+            for (int index = 0; index <= 31; index++) {
+                ContentTickContainer tickContainer = ContentTickContainer_.build(getContext(), index);
+                contentSamplesContainer.addView(tickContainer);
+                contentTickContainerList.add(tickContainer);
+            }
+        } else {
+            for (ContentTickContainer tickContainer : storedSample) {
+                contentSamplesContainer.addView(tickContainer);
+                contentTickContainerList.add(tickContainer);
+            }
         }
 
         tickSamplesView.setTickSamplesList(contentTickContainerList);

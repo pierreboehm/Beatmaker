@@ -76,6 +76,22 @@ public class ContentTickContainer extends LinearLayout {
         EventBus.getDefault().post(new Events.TickStateChangedEvent(index, SoundType.TONE, button4.getState()));
     }
 
+    public void setButtonStates(int[] buttonStates) {
+        button1.setState(buttonStates[0] == 1);
+        button2.setState(buttonStates[1] == 1);
+        button3.setState(buttonStates[2] == 1);
+        button4.setState(buttonStates[3] == 1);
+    }
+
+    public String getButtonStates() {
+        int kick = button1.getState() ? 1 : 0;
+        int snare = button2.getState() ? 1 : 0;
+        int hiHat = button3.getState() ? 1 : 0;
+        int tone = button4.getState() ? 1 : 0;
+
+        return String.format("{%s,%s,%s,%s}", kick, snare, hiHat, tone);
+    }
+
     public List<ClickableImageButton> getClickableImageButtons() {
         return new ArrayList<>(Arrays.asList(button1, button2, button3, button4));
     }

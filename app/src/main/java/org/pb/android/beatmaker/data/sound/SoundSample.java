@@ -49,13 +49,7 @@ public class SoundSample extends BaseModel implements Serializable {
 
         for (int index = 0; index <= 31; index++) {
             ContentTickContainer tickContainer = ContentTickContainer_.build(context, index);
-            List<ClickableImageButton> clickableImageButtonList = tickContainer.getClickableImageButtons();
-
-            clickableImageButtonList.get(0).setState(tickSamplesArray[index][0] == 1);
-            clickableImageButtonList.get(1).setState(tickSamplesArray[index][1] == 1);
-            clickableImageButtonList.get(2).setState(tickSamplesArray[index][2] == 1);
-            clickableImageButtonList.get(3).setState(tickSamplesArray[index][3] == 1);
-
+            tickContainer.setButtonStates(tickSamplesArray[index]);
             resultList.add(tickContainer);
         }
 
@@ -67,12 +61,7 @@ public class SoundSample extends BaseModel implements Serializable {
 
         for (ContentTickContainer tickContainer : tickSamplesList) {
             tickSamplesString += (tickSamplesString.isEmpty() ? "{" : ",");
-
-            int kick = tickContainer.getClickableImageButtons().get(0).getState() ? 1 : 0;
-            int snare = tickContainer.getClickableImageButtons().get(1).getState() ? 1 : 0;
-            int hiHat = tickContainer.getClickableImageButtons().get(2).getState() ? 1 : 0;
-            int tone = tickContainer.getClickableImageButtons().get(3).getState() ? 1 : 0;
-            tickSamplesString += String.format("{%s,%s,%s,%s}", kick, snare, hiHat, tone);
+            tickSamplesString += tickContainer.getButtonStates();
         }
 
         return tickSamplesString + "}";

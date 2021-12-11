@@ -1,4 +1,4 @@
-package org.pb.android.beatmaker.data.soundtrack;
+package org.pb.android.beatmaker.data.sound;
 
 import com.raizlabs.android.dbflow.annotation.Column;
 import com.raizlabs.android.dbflow.annotation.PrimaryKey;

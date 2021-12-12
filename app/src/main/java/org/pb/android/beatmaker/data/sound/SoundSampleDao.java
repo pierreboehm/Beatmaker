@@ -35,6 +35,10 @@ public class SoundSampleDao {
         return SQLite.select().from(SoundSample.class).where(SoundSample_Table.name.eq(name)).querySingle();
     }
 
+    public List<SoundSample> getSamples() {
+        return SQLite.select().from(SoundSample.class).queryList();
+    }
+
     public void deleteSample(String name) {
         SoundSample soundSample = getSample(name);
 

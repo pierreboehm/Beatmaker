@@ -54,6 +54,10 @@ public class SoundSample extends BaseModel implements Serializable {
         this.name = name;
     }
 
+    public String getName() {
+        return name;
+    }
+
     public void setBpmValue(int bpmValue) {
         this.bpmValue = bpmValue;
     }

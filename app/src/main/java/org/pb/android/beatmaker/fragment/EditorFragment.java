@@ -16,12 +16,15 @@ import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.ViewById;
+import org.androidannotations.annotations.sharedpreferences.Pref;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+import org.pb.android.beatmaker.AppPreferences_;
 import org.pb.android.beatmaker.R;
 import org.pb.android.beatmaker.data.ContentTickContainer;
 import org.pb.android.beatmaker.data.ContentTickContainer_;
+import org.pb.android.beatmaker.data.sound.SoundSample;
 import org.pb.android.beatmaker.data.sound.SoundSampleDao;
 import org.pb.android.beatmaker.event.Events;
 import org.pb.android.beatmaker.fragment.view.GraficalSoundView;
@@ -57,6 +60,9 @@ public class EditorFragment extends Fragment {
 
     @Bean
     SoundSampleDao soundSampleDao;
+
+    @Pref
+    AppPreferences_ preferences;
 
     private List<ContentTickContainer> contentTickContainerList = new ArrayList<>();
 
@@ -102,7 +108,8 @@ public class EditorFragment extends Fragment {
 
     @Click(R.id.ivKick)
     public void onKickClicked() {
-        soundSampleDao.saveSampleConfiguration("test", contentTickContainerList);
+        int bpmValue = Integer.parseInt(bpmTextValue.getText().toString());
+        soundSampleDao.saveSampleConfiguration("test", bpmValue, contentTickContainerList);
         Toast.makeText(getContext(), "sample test saved", Toast.LENGTH_SHORT).show();
     }
 
@@ -128,17 +135,31 @@ public class EditorFragment extends Fragment {
         graficalSoundView.handleSoundEvent(event);
     }
 
+    @SuppressLint("SetTextI18n")
     private void setupContentTickHolders() {
-        List<ContentTickContainer> storedSample = soundSampleDao.loadSampleConfiguration("test");
 
-        if (storedSample.isEmpty()) {
+        SoundSample soundSample = soundSampleDao.getSample("test");
+        List<ContentTickContainer> storedTickSamplesList = new ArrayList<>();
+
+        if (soundSample != null) {
+            int bpmValue = soundSample.getBpmValue();
+            storedTickSamplesList = soundSample.getTickSamplesList(getContext());
+
+            bpmTextValue.setText(Integer.toString(bpmValue));
+            soundManager.reloadSoundBank(
+                    soundSample.getKickResourceId(), soundSample.getSnareResourceId(),
+                    soundSample.getHiHatResourceId(), soundSample.getToneResourceId()
+            );
+        }
+
+        if (storedTickSamplesList.isEmpty()) {
             for (int index = 0; index <= 31; index++) {
                 ContentTickContainer tickContainer = ContentTickContainer_.build(getContext(), index);
                 contentSamplesContainer.addView(tickContainer);
                 contentTickContainerList.add(tickContainer);
             }
         } else {
-            for (ContentTickContainer tickContainer : storedSample) {
+            for (ContentTickContainer tickContainer : storedTickSamplesList) {
                 contentSamplesContainer.addView(tickContainer);
                 contentTickContainerList.add(tickContainer);
             }

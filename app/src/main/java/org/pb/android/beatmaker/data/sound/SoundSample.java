@@ -30,6 +30,21 @@ public class SoundSample extends BaseModel implements Serializable {
     String name;
 
     @Column
+    int bpmValue;
+
+    @Column
+    int kickResourceId;
+
+    @Column
+    int snareResourceId;
+
+    @Column
+    int hiHatResourceId;
+
+    @Column
+    int toneResourceId;
+
+    @Column
     String tickSamplesString;
 
     public SoundSample() {
@@ -37,6 +52,37 @@ public class SoundSample extends BaseModel implements Serializable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public void setBpmValue(int bpmValue) {
+        this.bpmValue = bpmValue;
+    }
+
+    public int getBpmValue() {
+        return bpmValue;
+    }
+
+    public void setResourceIds(int kickResourceId, int snareResourceId, int hiHatResourceId, int toneResourceId) {
+        this.kickResourceId = kickResourceId;
+        this.snareResourceId = snareResourceId;
+        this.hiHatResourceId = hiHatResourceId;
+        this.toneResourceId = toneResourceId;
+    }
+
+    public int getKickResourceId() {
+        return kickResourceId;
+    }
+
+    public int getSnareResourceId() {
+        return snareResourceId;
+    }
+
+    public int getHiHatResourceId() {
+        return hiHatResourceId;
+    }
+
+    public int getToneResourceId() {
+        return toneResourceId;
     }
 
     public void setTickSamples(List<ContentTickContainer> tickSamplesList) {
@@ -61,7 +107,9 @@ public class SoundSample extends BaseModel implements Serializable {
 
         for (ContentTickContainer tickContainer : tickSamplesList) {
             tickSamplesString += (tickSamplesString.isEmpty() ? "{" : ",");
-            tickSamplesString += tickContainer.getButtonStates();
+            int[] buttonStates = tickContainer.getButtonStates();
+            tickSamplesString += String.format("{%s,%s,%s,%s}",
+                    buttonStates[0], buttonStates[1], buttonStates[2], buttonStates[3]);
         }
 
         return tickSamplesString + "}";

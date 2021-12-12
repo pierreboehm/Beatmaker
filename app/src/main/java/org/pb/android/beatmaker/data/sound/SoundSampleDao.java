@@ -43,12 +43,13 @@ public class SoundSampleDao {
         }
     }
 
-    public void saveSampleConfiguration(String name, List<ContentTickContainer> tickSamplesList) {
+    public void saveSampleConfiguration(String name, int bpmValue, List<ContentTickContainer> tickSamplesList) {
         SoundSample soundSample = getSample(name);
 
         if (soundSample == null) {
             soundSample = new SoundSample();
             soundSample.setName(name);
+            soundSample.setBpmValue(bpmValue);
         }
 
         soundSample.setTickSamples(tickSamplesList);

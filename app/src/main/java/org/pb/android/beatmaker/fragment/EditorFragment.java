@@ -146,10 +146,10 @@ public class EditorFragment extends Fragment {
             storedTickSamplesList = soundSample.getTickSamplesList(getContext());
 
             bpmTextValue.setText(Integer.toString(bpmValue));
-            soundManager.reloadSoundBank(
+            /*soundManager.reloadSoundBank(
                     soundSample.getKickResourceId(), soundSample.getSnareResourceId(),
                     soundSample.getHiHatResourceId(), soundSample.getToneResourceId()
-            );
+            );*/
         }
 
         if (storedTickSamplesList.isEmpty()) {

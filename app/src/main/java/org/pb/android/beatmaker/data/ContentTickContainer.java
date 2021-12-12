@@ -83,13 +83,13 @@ public class ContentTickContainer extends LinearLayout {
         button4.setState(buttonStates[3] == 1);
     }
 
-    public String getButtonStates() {
+    public int[] getButtonStates() {
         int kick = button1.getState() ? 1 : 0;
         int snare = button2.getState() ? 1 : 0;
         int hiHat = button3.getState() ? 1 : 0;
         int tone = button4.getState() ? 1 : 0;
 
-        return String.format("{%s,%s,%s,%s}", kick, snare, hiHat, tone);
+        return new int[] {kick, snare, hiHat, tone};
     }
 
     public List<ClickableImageButton> getClickableImageButtons() {

@@ -1,6 +1,7 @@
 package org.pb.android.beatmaker.event;
 
 import org.pb.android.beatmaker.data.SoundTypeResource.SoundType;
+import org.pb.android.beatmaker.data.sound.SoundSample;
 
 public class Events {
 
@@ -37,6 +38,18 @@ public class Events {
 
         public int getSampleIndex() {
             return sampleIndex;
+        }
+    }
+
+    public static class SampleSelectEvent {
+        private final SoundSample soundSample;
+
+        public SampleSelectEvent(SoundSample soundSample) {
+            this.soundSample = soundSample;
+        }
+
+        public SoundSample getSoundSample() {
+            return soundSample;
         }
     }
 

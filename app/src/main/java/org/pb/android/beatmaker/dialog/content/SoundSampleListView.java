@@ -11,8 +11,10 @@ import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EViewGroup;
 import org.androidannotations.annotations.ItemClick;
 import org.androidannotations.annotations.ViewById;
+import org.greenrobot.eventbus.EventBus;
 import org.pb.android.beatmaker.R;
 import org.pb.android.beatmaker.data.sound.SoundSample;
+import org.pb.android.beatmaker.event.Events;
 
 @SuppressLint("NonConstantResourceId")
 @EViewGroup(R.layout.view_sound_sample_list)
@@ -38,6 +40,6 @@ public class SoundSampleListView extends LinearLayout {
 
     @ItemClick(R.id.lvItemContainer)
     public void onItemClick(SoundSample soundSample) {
-        Log.d(TAG, "selected item: " + soundSample.getName());
+        EventBus.getDefault().post(new Events.SampleSelectEvent(soundSample));
     }
 }

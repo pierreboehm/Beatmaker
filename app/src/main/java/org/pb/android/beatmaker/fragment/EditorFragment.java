@@ -26,6 +26,9 @@ import org.pb.android.beatmaker.data.ContentTickContainer;
 import org.pb.android.beatmaker.data.ContentTickContainer_;
 import org.pb.android.beatmaker.data.sound.SoundSample;
 import org.pb.android.beatmaker.data.sound.SoundSampleDao;
+import org.pb.android.beatmaker.dialog.ContentDialog;
+import org.pb.android.beatmaker.dialog.content.SoundSampleListView;
+import org.pb.android.beatmaker.dialog.content.SoundSampleListView_;
 import org.pb.android.beatmaker.event.Events;
 import org.pb.android.beatmaker.fragment.view.GraficalSoundView;
 import org.pb.android.beatmaker.fragment.view.TickSamplesView;
@@ -64,6 +67,7 @@ public class EditorFragment extends Fragment {
     @Pref
     AppPreferences_ preferences;
 
+    private ContentDialog contentDialog = null;
     private List<ContentTickContainer> contentTickContainerList = new ArrayList<>();
 
     @AfterViews
@@ -84,6 +88,21 @@ public class EditorFragment extends Fragment {
     public void onPause() {
         EventBus.getDefault().unregister(this);
         super.onPause();
+    }
+
+    @Click(R.id.graficalSoundView)
+    public void onGraficalSoundViewClick() {
+        if (contentDialog != null) {
+            contentDialog.dismiss();
+        }
+
+        SoundSampleListView soundSampleListView = SoundSampleListView_.build(getContext());
+        contentDialog = new ContentDialog.Builder(getContext())
+                .setContent(soundSampleListView)
+                .build();
+
+        contentDialog.show();
+
     }
 
     @Click(R.id.btnDecrementVolume)
@@ -131,6 +150,12 @@ public class EditorFragment extends Fragment {
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(Events.SampleSelectEvent event) {
+        // TODO: re-init with selected sound sample
+        contentDialog.dismiss();
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(Events.GraficalSoundEvent event) {
         graficalSoundView.handleSoundEvent(event);
     }
@@ -151,6 +176,9 @@ public class EditorFragment extends Fragment {
                     soundSample.getHiHatResourceId(), soundSample.getToneResourceId()
             );*/
         }
+
+        contentSamplesContainer.removeAllViews();
+        contentTickContainerList.clear();
 
         if (storedTickSamplesList.isEmpty()) {
             for (int index = 0; index <= 31; index++) {

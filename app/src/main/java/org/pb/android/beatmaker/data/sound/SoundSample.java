@@ -149,4 +149,8 @@ public class SoundSample extends BaseModel implements Serializable {
 
         return resultArray;
     }
+
+    private int getBit(int n, int k) {
+        return (n >> k) & 1;
+    }
 }

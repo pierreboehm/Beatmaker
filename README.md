@@ -1,3 +1,3 @@
 # Beatmaker
 
-... as the name said  ;)
+... as the name says  ;)
